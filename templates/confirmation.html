@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header>
+        <div class="logo"><strong>PHASE 3</strong> MERCH</div>
+    </header>
+
+    <div style="text-align: center; margin-top: 5rem;">
+        <div style="font-size: 4rem;">✅</div>
+        <h1 style="margin-top: 1rem;">Order Placed!</h1>
+        <p style="color: #666; margin-top: 0.5rem;">Your order <strong>#{{ order_id }}</strong> has been placed successfully.</p>
+        <div style="margin-top: 2rem;">
+            <a href="{{ url_for('delivery') }}">
+                <button class="btn" style="margin-right: 1rem;">Check Delivery Status</button>
+            </a>
+            <a href="{{ url_for('dashboard') }}">
+                <button class="btn">Continue Shopping</button>
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

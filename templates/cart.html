@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header>
+        <div class="logo"><strong>PHASE 3</strong> MERCH</div>
+        <div class="nav-icons">
+            <a href="{{ url_for('dashboard') }}" style="font-size: 0.9rem; color: #666; text-decoration: none;">← Back to Shop</a>
+        </div>
+    </header>
+
+    <div class="cart-container">
+        <h1 style="margin-bottom: 2rem;">Your Cart</h1>
+
+        {% if items %}
+            {% for item in items %}
+            <div class="cart-item">
+                <span>
+                    {% if item.Product_type == 'Apparel' %}👕
+                    {% elif item.Product_type == 'Accessory' %}👜
+                    {% elif item.Product_type == 'Stationery' %}📝
+                    {% else %}📦{% endif %}
+                    {{ item.Product_name }}
+                </span>
+                <span class="price">${{ item.Price }}</span>
+            </div>
+            {% endfor %}
+
+            <div class="cart-summary">
+                <p>Subtotal: <strong>${{ subtotal }}</strong></p>
+                <p>Tax (8.875%): <strong>${{ tax }}</strong></p>
+                <p style="font-size: 1.2rem;">Total: <strong>${{ total }}</strong></p>
+            </div>
+
+            <form action="/place_order" method="POST" style="margin-top: 2rem;">
+                <div class="input-group" style="max-width: 300px;">
+                    <label for="delivery_method"><strong>Delivery Method</strong></label>
+                    <select name="delivery_method" id="delivery_method" style="width:100%; padding: 0.8rem; border-radius: 6px; border: 1px solid #ddd;">
+                        <option value="Standard">Standard</option>
+                        <option value="Express">Express</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn" style="margin-top: 1rem;">Place Order</button>
+            </form>
+
+        {% else %}
+            <p style="color: #888;">Your cart is empty. <a href="{{ url_for('dashboard') }}">Go shopping!</a></p>
+        {% endif %}
+    </div>
+
+</body>
+</html>

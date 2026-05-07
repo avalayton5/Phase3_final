@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Status</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header>
+        <div class="logo"><strong>PHASE 3</strong> MERCH</div>
+        <div class="nav-icons">
+            <a href="{{ url_for('dashboard') }}" style="font-size: 0.9rem; color: #666; text-decoration: none;">← Back to Shop</a>
+        </div>
+    </header>
+
+    <div class="cart-container">
+        <h1 style="margin-bottom: 2rem;">🚚 Delivery Status</h1>
+
+        {% if order %}
+            <div class="cart-item" style="flex-direction: column; align-items: flex-start; gap: 0.8rem;">
+                <p><strong>Order ID:</strong> {{ order.Order_id }}</p>
+                <p><strong>Order Date:</strong> {{ order.Order_date }}</p>
+                <p><strong>Order Status:</strong>
+                    <span style="
+                        background: {% if order.Order_status == 'Delivered' %}#28a745{% elif order.Order_status == 'Cancelled' %}#dc3545{% else %}#007bff{% endif %};
+                        color: white;
+                        padding: 2px 10px;
+                        border-radius: 12px;
+                        font-size: 0.85rem;">
+                        {{ order.Order_status }}
+                    </span>
+                </p>
+                {% if order.Delivery_id %}
+                <hr style="width:100%; border-color: #eee;">
+                <p><strong>Delivery ID:</strong> {{ order.Delivery_id }}</p>
+                <p><strong>Delivery Method:</strong> {{ order.Method }}</p>
+                <p><strong>Delivery Date:</strong> {{ order.Delivery_date if order.Delivery_date else 'Pending' }}</p>
+                <p><strong>Delivery Status:</strong>
+                    <span style="
+                        background: {% if order.Delivery_status == 'Delivered' %}#28a745{% elif order.Delivery_status == 'Cancelled' %}#dc3545{% else %}#007bff{% endif %};
+                        color: white;
+                        padding: 2px 10px;
+                        border-radius: 12px;
+                        font-size: 0.85rem;">
+                        {{ order.Delivery_status }}
+                    </span>
+                </p>
+                {% endif %}
+            </div>
+        {% else %}
+            <p style="color: #888;">No orders found. <a href="{{ url_for('dashboard') }}">Place your first order!</a></p>
+        {% endif %}
+    </div>
+
+</body>
+</html>

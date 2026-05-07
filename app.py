@@ -4,7 +4,7 @@ import mysql.connector
 app = Flask(__name__)
 app.secret_key = 'random_string'
  
-def get_db():
+def getdb():
     return mysql.connector.connect(
         host="localhost",
         user="root",
@@ -14,7 +14,7 @@ def get_db():
  
 def check_db_credentials(input_user, input_pass):
     try:
-        db = get_db()
+        db = getdb()
         cursor = db.cursor()
         query = "SELECT User_id, Fname FROM USERS WHERE username = %s AND password = %s"
         cursor.execute(query, (input_user, input_pass))
@@ -47,7 +47,7 @@ def dashboard():
     if 'user_id' not in session:
         return redirect(url_for('home'))
     try:
-        db = get_db()
+        db = getdb()
         cursor = db.cursor(dictionary=True)
         cursor.execute("SELECT * FROM MERCH_STOCK")
         products = cursor.fetchall()
@@ -75,7 +75,7 @@ def cart():
     items = []
     if cart_ids:
         try:
-            db = get_db()
+            db = getdb()
             cursor = db.cursor(dictionary=True)
             for pid in cart_ids:
                 cursor.execute("SELECT * FROM MERCH_STOCK WHERE Product_id = %s", (pid,))
@@ -106,7 +106,7 @@ def place_order():
     user_id = session['user_id']
  
     try:
-        db = get_db()
+        db = getdb()
         cursor = db.cursor(dictionary=True)
  
         cursor.execute("SELECT MAX(Order_id) as max_id FROM ORDERS")
@@ -173,7 +173,7 @@ def delivery():
         return redirect(url_for('home'))
     user_id = session['user_id']
     try:
-        db = get_db()
+        db = getdb()
         cursor = db.cursor(dictionary=True)
         cursor.execute("""
             SELECT o.Order_id, o.Order_date, o.Order_status,

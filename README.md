@@ -15,8 +15,8 @@ pythonpassword="Flavor.Savor5",
 Replace Flavor.Savor5 with your own MySQL password
 Save the file
 
-Step 3: Run the Application
-Open Terminal, go to the project folder, and run:
+Step 3: Run the Application 
+Open Terminal, go to the project folder, and run: 
 python3 app.py
 Then open your browser and go to:
 http://127.0.0.1:5000

@@ -84,5 +84,6 @@ Click the truck icon on the dashboard
 
 View your most recent order's delivery ID, method, date, and status
 
-Notes
+Notes:
+
 Sample data includes 5 users, 10 products, and 7 orders that already exist

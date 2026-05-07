@@ -4,7 +4,6 @@ import mysql.connector
 app = Flask(__name__)
 app.secret_key = 'random_string'
  
-# ── Database connection helper ────────────────────────────────────────────────
 def get_db():
     return mysql.connector.connect(
         host="localhost",
@@ -13,7 +12,6 @@ def get_db():
         database="merch_store"
     )
  
-# ── Login check ───────────────────────────────────────────────────────────────
 def check_db_credentials(input_user, input_pass):
     try:
         db = get_db()
@@ -27,7 +25,6 @@ def check_db_credentials(input_user, input_pass):
         print(f"Error: {err}")
         return None
  
-# ── Home / Login page ─────────────────────────────────────────────────────────
 @app.route('/')
 def home():
     return render_template('login.html')
@@ -45,7 +42,6 @@ def login():
     else:
         return render_template('login.html', error="Invalid username or password.")
  
-# ── Dashboard / Merch page (Function 2: View Inventory) ──────────────────────
 @app.route('/dashboard')
 def dashboard():
     if 'user_id' not in session:
@@ -60,7 +56,6 @@ def dashboard():
     except mysql.connector.Error as err:
         return f"Database Error: {err}"
  
-# ── Add to cart ───────────────────────────────────────────────────────────────
 @app.route('/add_to_cart/<int:product_id>')
 def add_to_cart(product_id):
     if 'user_id' not in session:
@@ -72,7 +67,6 @@ def add_to_cart(product_id):
     session['cart'] = cart
     return redirect(url_for('dashboard'))
  
-# ── Cart / Checkout page (Function 1: Place an Order) ────────────────────────
 @app.route('/cart')
 def cart():
     if 'user_id' not in session:
@@ -115,19 +109,16 @@ def place_order():
         db = get_db()
         cursor = db.cursor(dictionary=True)
  
-        # get next order ID
         cursor.execute("SELECT MAX(Order_id) as max_id FROM ORDERS")
         result = cursor.fetchone()
         new_order_id = (result['max_id'] or 100) + 1
  
-        # insert into ORDERS
         cursor2 = db.cursor()
         cursor2.execute(
             "INSERT INTO ORDERS VALUES (%s, CURDATE(), %s, %s, %s)",
             (new_order_id, len(cart_ids), 'In Progress', user_id)
         )
  
-        # insert ORDER_ITEM rows
         cursor.execute("SELECT MAX(Item_ID) as max_id FROM ORDER_ITEM")
         result = cursor.fetchone()
         max_item = result['max_id'] or 1000
@@ -143,7 +134,6 @@ def place_order():
                 (prod_id,)
             )
  
-        # insert PAYMENT
         cursor.execute("SELECT MAX(Payment_id) as max_id FROM PAYMENT")
         result = cursor.fetchone()
         new_pay_id = (result['max_id'] or 200) + 1
@@ -152,7 +142,6 @@ def place_order():
             (new_pay_id, 4000 + new_pay_id, 999, new_order_id)
         )
  
-        # insert DELIVERY
         cursor.execute("SELECT MAX(Delivery_id) as max_id FROM DELIVERY")
         result = cursor.fetchone()
         new_del_id = (result['max_id'] or 300) + 1
@@ -171,7 +160,6 @@ def place_order():
     except mysql.connector.Error as err:
         return f"Database Error: {err}"
  
-# ── Order confirmation ────────────────────────────────────────────────────────
 @app.route('/order_confirmation')
 def order_confirmation():
     if 'user_id' not in session:
@@ -179,7 +167,6 @@ def order_confirmation():
     order_id = session.get('last_order_id', '???')
     return render_template('confirmation.html', order_id=order_id)
  
-# ── Delivery status page (Function 3: Check Delivery Status) ─────────────────
 @app.route('/delivery')
 def delivery():
     if 'user_id' not in session:
@@ -203,7 +190,6 @@ def delivery():
     except mysql.connector.Error as err:
         return f"Database Error: {err}"
  
-# ── Logout ────────────────────────────────────────────────────────────────────
 @app.route('/logout')
 def logout():
     session.clear()

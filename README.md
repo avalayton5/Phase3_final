@@ -1,12 +1,10 @@
-Phase 3: Merch Store Application
+Phase 3: Merch Store Application 
 A web merch store application built with Python (Flask) and MySQL.
 
-Step 1: Set up the database
-
+Step 1: Set up the database 
 Open MySQL Workbench and run the database
 
 Step 2: Fix password
-
 Open app.py in any text editor
 Change this line:
 
